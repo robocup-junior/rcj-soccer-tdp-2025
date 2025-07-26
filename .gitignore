@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+
+# Lock files
+*.lock
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# Backup files
+*~
+*.bak
+
+# macOS
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/ 
