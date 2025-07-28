@@ -192,19 +192,19 @@ We mainly use the cameras to find our position inside the field. Mostly for cent
 
 *How did you design the mechanical parts of your robots?*
 
-a
+For the mechanical design we only used Solidworks. We worked around issues that robots from previous years had such as bad screw placement, poor conector accessibility and aesthetic preferences of our team. One of the main ideas for this year's robots was having two different robot designs while using identical PCBs for both. We did this because we wanted more defined roles for each robot and wanted to optimize their design to fit those roles. This mainly impacted the size of our kicker solenoid, motor orientation and motor specifications. Giving our goalkeeper better lateral speed and more powerful kicks, and giving our striker more dynamic and agile movement. Most of our design changes were due to incorrect tolerances. However the most notable were due to improper structural support and thin walls, which resulted in parts breaking, cracking or not fitting. We also ended up ditching a mirror design for our camera due to poor visibility and opted for using extension cables and a mounting bracket. 
 
 ## Build Method
 
 *How did you build your design?*
 
-a
+We utilized 3D printing for most of our parts. We did several material tests and ended up settling on the following materials: Polycarbonate for the chassis, as it delivered high impact resistance and stiffness at low thickness. PET-CF for our wheels, as it delivered the highest stiffness and kept the dowel pins and rollers in place. PLA for aesthetic parts and low strain pieces, as it provided a good color variety and easy printing which allowed quick iteration. We used JLCPCB for manufacturing our PCBs as they are quite affordable and quick.
 
 ## Motors & Reason
 
 *How many motors have you used and why?*
 
-a
+We use 4 motors on each of our robots for better agility and torque. This would have been harder to do in the past but due to the increase in weight from 1200g to 1400g we saw it as a good investment. We use two different motor models, Pololu 25D HP 12V with 1000 RPM and Maxon DCX19 with 800RPM. Our goalkeeper uses the Pololu 1000 RPM  for higher speed when defending laterally and our striker uses the lower 800RPM but higher torque for better agility. Due to the higher speed we are aiming for we needed better traction and so decided to manufacture double stacked omnidirectional wheels, however, we ran out of filament for the seconds layer on all 4 wheels so we will not be able to use the stacked version.
 
 ## Kicker Design
 
@@ -228,7 +228,7 @@ https://github.com/chaBotsMX/Phoenix-RCJ-2025/tree/main/CAD
 
 *Mechanical Innovation*
 
-a
+I am most proud of the way I was able to integrate the mechanical and electrical design to allow for the different robot designs while keeping the same PCB layouts. I'm also very proud of the aesthetic I was able to integrate into both of the designs without compromising functionality or ease of use and assembly. I am also very proud of the dribbler design we were able to develop, however we were unable to do any significant testing for actual games.
 
 ## Mechanical Photos
 
@@ -278,13 +278,13 @@ We use an array of 18 ALS-PT19 phototransistors in tandem with 18 programmable l
 
 *What sensors do you use for navigation and how are these sensors connected to your processor? What sensors do you use to find your position in the field? What about the direction your robot faces?*
 
-a
+We use a line, IMU, ultrasonic and camera to navigate through the field. Our line sensor prevents our from leaving the field and gives our goalkeeper an estimated position on the field. The 3 URM09 ultrasonic sensors we use give our robots an estimated position on the field, however these can fail if obstructed by our own or opponents' robots. We use a BNO085 as our compass/IMU to orient itself forward, this IMU sensor has been a great upgrade from the BNO055 as it has less drift and we have never had to calibrate it. We use the camera on both our robots to center into the goal and on our goalkeeper to ensure it stays within its effective area of defense.
 
 ## Kicker Circuit
 
 *How do you drive your kicker system? How does the circuit make the kicker work?*
 
-a
+We designed  a voltage boost circuit into our main PCB using the Texas Instruments LM2587 chip to boost from our 11.1V LiPo battery all the way to the allowed 48V to charge a 63V 6800uF capacitor. We then use a combination of an optocoupler and an N channel mosfet to control when to discharge the capacitor with our microcontroller while maintaining our logic circuits isolated from the higher voltages. This is done by turning on the LED inside the optocoupler which in turn opens its internal phototransistor, which then opens the N channel mosfet. This allows the capacitor to discharge into our solenoids. We also have an addition of a rectifier and zener diode to dissipate any extra reverse voltage into heat, to prevent any damage to our mosfet and boost circuit. 
 
 ## Dribbler Circuit
 
@@ -328,7 +328,18 @@ We are proud of our both analog and digital line sensor circuit although it stil
 
 *How do you use your processor to move your motors?*
 
-a
+Our robot's main microcontroller decides the output of motors based on sensor data the Teensy receives through UART. For simplicity, the main data that gets sent from the sensor’s microcontrollers, are the resulting angles in degrees of a vector pointing to a desired sensor input. Based on this received vector, the robot will decide the amount of power (pulse width modulation) has to be applied to each motor to move in the desired angle, this by using the following vector equation:
+
+Vx = P * cos(theta)
+Vy = P * sin(theta)
+M0 = -Vx + W
+M1 = -Vy + W
+M2 = Vx + W
+M3 = Vy + W
+
+Where Vx and Vy represent the X and Y components of a vector relative to the wheels layout, P is the desired relative Pulse Width Modulation of the output, Theta is the received angle in radians, W is the rotation force for the robot to move in the Z axis, and Mi are the motor’s output PWM.
+
+For the robot to achieve precise movements related to the desired angle, the robot must also be always facing the same direction in the Z axis. To accomplish this, we use a PD controller using our IMU as input, so the robot can constantly correct itself to face the same direction while being smooth and precise.
 
 ## Ball Detection Method
 
@@ -390,10 +401,10 @@ https://github.com/chaBotsMX/Phoenix-RCJ-2025/tree/main/Software
 *How much did it cost you to build your robots?*
 
 An approximate of cost in mexican pesos:
-Robot components: MEX $85,800
-Experiments: MEX $10,000
-Environment: MEX $8,000
-MEX $1 = USD $0.05
+Robot components: MXN $85,800
+Experiments: MXN $10,000
+Environment: MXN $8,000
+MXN $1 = USD $0.05
 
 ## Funding
 
